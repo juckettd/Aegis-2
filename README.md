@@ -50,7 +50,7 @@ The files provided here for the case. They are printed in sections so that a pri
 
 Once everything is glued together then no post processing on the outside is technically required to assemble the device. However, I chose to use filler, sand paper, and paint to get a really clean looking finish. The level of detail you desire on your handheld will be up to you based on how much effort you want to devote. Refer to youtube for how to sand and paint a 3D printed piece. However, try to keep the inside of the device as paint free as possible as the internal structure is already at the correct dimensions for the internal components.
 
-I would also sand down the holes where the buttons will be located as they will to be rough from the 3D printing process. This can cause the buttons to stick. I would also check the shoulder buttons to make sure there is not any fricten preventing them from moving properly. If there is then sound down the appropriate areas.
+I would also sand down the holes where the buttons will be located as they will to be rough from the 3D printing process. This can cause the buttons to stick. I would also check the shoulder buttons to make sure there is not any friction preventing them from moving properly. If there is then sand down the appropriate areas.
 
 ### Assembly
 
