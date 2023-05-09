@@ -62,16 +62,13 @@ TODO: Assembly Instructions
 
 The Raspberry PI OS Buster version or Retropie both work. To get Bullseye working we need a new video driver that is not available yet. I've made a temporary one and will provide it here when I test it out.
 
-The Config files provided also do not work yet without some modifications
+The Config files provided that setup the device will install a monitor program that looks for the button presses for the power/reset/volume/misc. And like the previous handheld I built it will also eventually provide an overlay that will show battery/wifi status along with volume/brightness. However, the overlay does not work yet so that part of the code is commented out. But the monitor script does work for the buttons.
 
 ### /boot/config.txt
 
 Regardless of which CM4 you use and which method is used to load the OS, you will need to add the following lines to the /boot/config.txt file. These are also listed in the /Config/boot/config.txt file in this repository:
 
 dtoverlay=dwc2,dr_mode=host<br/>
-gpu_mem_256=128<br/>
-gpu_mem_512=256<br/>
-gpu_mem_1024=256<br/>
 h264_freq=333
 
 The lines above will optimize the graphics for Moonlight (if you choose to use it to stream PC games) and will enable USB 2.0 on the device to get the Teensy and external USB ports working.
