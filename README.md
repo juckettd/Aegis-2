@@ -1,7 +1,7 @@
 # Aegis-2
 The Aegis 2 Handheld with a 7" screen
 
-NOTE: This is still a work in progress. The design has been finalized but I'm still working on the instructions, therefore there might be steps that are missing at this moment.
+NOTE: This is still a work in progress.
 
 ## Summary
 
