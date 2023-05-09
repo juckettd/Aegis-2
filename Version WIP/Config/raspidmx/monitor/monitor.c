@@ -684,7 +684,7 @@ void increase()
 		if (brightness > 200)
 			brightness = 200;
 		setBrightnessLevel(brightness);
-		displayBrightnessBar(brightness);
+		//displayBrightnessBar(brightness);
 	}
 	else
 	{
@@ -693,7 +693,7 @@ void increase()
 		if(volume > 255)
 			volume = 255;
 		setVolumeLevel(volume);
-		displayVolumeBar(volume);
+		//displayVolumeBar(volume);
 	}
 }
 
@@ -707,7 +707,7 @@ void decrease()
 		if (brightness < 0)
 			brightness = 0;
 		setBrightnessLevel(brightness);
-		displayBrightnessBar(brightness);
+		//displayBrightnessBar(brightness);
 	}
 	else
 	{
@@ -716,7 +716,7 @@ void decrease()
 		if(volume < 0)
 			volume = 0;
 		setVolumeLevel(volume);
-		displayVolumeBar(volume);
+		//displayVolumeBar(volume);
 	}
 }
 
@@ -943,11 +943,11 @@ int main(int argc, char *argv[])
 	setupFiles();
 	setupFuelGauge();
 	setupBatteryCharger();
-	setupDisplay();
+	//setupDisplay();
 	setupAudio();
 	setupButtons();
 
-	loadInitialImages();
+	//loadInitialImages();
 
 	previousTick = micros();
 	tick = previousTick;
@@ -960,17 +960,17 @@ int main(int argc, char *argv[])
 		if (tickDiff > 1000000)
 		{
 			previousTick = tick;
-			displayBattery(tick);
-			displayWifi();
-			displayEnvironment();
+			//displayBattery(tick);
+			//displayWifi();
+			//displayEnvironment();
 
 			if (fanTick > 0)
 				fanTick = fanTick - tickDiff;
 		}
 
 		// check volume bar and hide if out for more then 3 seconds
-		if ((display_volume == 1 || display_brightness == 1) && tick - display_tick >= volbriBarTime)
-			hideBar();
+		//if ((display_volume == 1 || display_brightness == 1) && tick - display_tick >= volbriBarTime)
+			//hideBar();
 
 		// check to see if the misc button has been held down but not being used for alternate increase and decrease buttons
 		if (misc_pressed == 1 && misc_alt == 0 && tick - misc_tick >= miscButtonTime)

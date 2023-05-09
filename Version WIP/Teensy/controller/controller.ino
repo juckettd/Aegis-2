@@ -3,29 +3,25 @@
 uint8_t smallRumbleCounter = 0;
 uint8_t bigRumbleCounter = 0;
 
+// Define button pins
+uint8_t inputButtonCount = 16;
+uint8_t inputButtonPins[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 17, 18, 19};
+uint8_t outputButtonCount = 2;
+uint8_t outputButtonPins[2] = {22, 23};
+
+int deadZone = 75;
+
+// Setup the debouncing
+
 void setup() {
-  pinMode(1, INPUT_PULLUP);  
-  pinMode(2, INPUT_PULLUP);  
-  pinMode(3, INPUT_PULLUP);  
-  pinMode(4, INPUT_PULLUP);  
-  pinMode(5, INPUT_PULLUP);  
-  pinMode(6, INPUT_PULLUP);  
-  pinMode(7, INPUT_PULLUP);  
-  pinMode(8, INPUT_PULLUP);  
-  pinMode(9, INPUT_PULLUP);  
-  pinMode(10, INPUT_PULLUP);  
-  pinMode(11, INPUT_PULLUP);  
-  pinMode(12, INPUT_PULLUP);  
-  pinMode(16, INPUT_PULLUP);  
-  pinMode(17, INPUT_PULLUP);  
-  pinMode(18, INPUT_PULLUP);  
-  pinMode(19, INPUT_PULLUP);  
+  for(int i = 0; i < inputButtonCount; i++) {
+    pinMode(inputButtonPins[i], INPUT_PULLUP);
+  }
 
-  pinMode(22, OUTPUT);
-  pinMode(23, OUTPUT);
-
-  analogWriteFrequency(22, 187500);
-  analogWriteFrequency(23, 187500);
+  for(int i = 0; i < outputButtonCount; i++) {
+    pinMode(outputButtonPins[i], OUTPUT);
+    analogWriteFrequency(outputButtonPins[i], 187500);
+  }
 
   XInput.begin();
 
@@ -64,6 +60,16 @@ void loop() {
   uint8_t smallRumble = XInput.getRumbleRight();
   uint8_t bigRumbleSet = 0;
   uint8_t smallRumbleSet = 0;
+
+  if ((leftStickX > (500 - deadZone)) && (leftStickX < (500 + deadZone)))
+    leftStickX = 500;
+  if ((leftStickY > (500 - deadZone)) && (leftStickY < (500 + deadZone)))
+    leftStickY = 500;
+
+  if ((rightStickX > (500 - deadZone)) && (rightStickX < (500 + deadZone)))
+    rightStickX = 500;
+  if ((rightStickY > (500 - deadZone)) && (rightStickY < (500 + deadZone)))
+    rightStickY = 500;
 
   XInput.setDpad(upPad, downPad, leftPad, rightPad);
   XInput.setJoystickY(JOY_LEFT, leftStickY, true);
@@ -115,5 +121,5 @@ void loop() {
   analogWrite(23, bigRumbleSet);
   analogWrite(22, smallRumbleSet);
 
-  delay(5);
+  delay(25);
 }
