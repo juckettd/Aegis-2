@@ -25,7 +25,7 @@
 //
 //-------------------------------------------------------------------------
 
-#define _GNU_SOURCE
+//#define _GNU_SOURCE
 
 #include <assert.h>
 #include <ctype.h>
@@ -57,7 +57,7 @@
 
 //-------------------------------------------------------------------------
 
-#define NDEBUG
+//#define NDEBUG
 
 //-------------------------------------------------------------------------
 
@@ -75,7 +75,7 @@ char color[] = "white";
 char wifi_carrier[] = "/sys/class/net/wlan0/carrier"; // 1 when wifi connected, 0 when disconnected and/or ifdown
 char wifi_linkmode[] = "/sys/class/net/wlan0/link_mode"; // 1 when ifup, 0 when ifdown
 char bt_devices_dir[] = "/sys/class/bluetooth";
-char backlight[] = "/sys/class/backlight/rpi_backlight/brightness";
+char backlight[] = "/sys/class/backlight/fe700000.dsi.0/brightness";
 char env_cmd[] = "vcgencmd get_throttled";
 char temp_cmd[] = "vcgencmd measure_temp";
 
@@ -188,13 +188,13 @@ void setupDisplay()
 
 	//---------------------------------------------------------------------
 
-	display = vc_dispmanx_display_open(displayNumber);
-	assert(display != 0);
+	//display = vc_dispmanx_display_open(displayNumber);
+	//assert(display != 0);
 
 	//---------------------------------------------------------------------
 
-	int result = vc_dispmanx_display_get_info(display, &info);
-	assert(result == 0);
+	//int result = vc_dispmanx_display_get_info(display, &info);
+	//assert(result == 0);
 }
 
 void setupFiles()
@@ -237,8 +237,8 @@ void setupFuelGauge()
 	//i2cWriteWordData(fuel_gauge_handle, 0xDB, 0x8000);
 
 	fuel_gauge_handle = wiringPiI2CSetup(0x36);
-	wiringPiI2CWriteReg16(fuel_gauge_handle, 0x18, 0x1770);
-	wiringPiI2CWriteReg16(fuel_gauge_handle, 0x45, 0x0177);
+	wiringPiI2CWriteReg16(fuel_gauge_handle, 0x18, 0x2710);
+	wiringPiI2CWriteReg16(fuel_gauge_handle, 0x45, 0x0271);
 	wiringPiI2CWriteReg16(fuel_gauge_handle, 0xDB, 0x8000);
 }
 
@@ -251,7 +251,7 @@ void setupBatteryCharger()
 	//i2cWriteByteData(battery_charger_handle, 0x07, 0x8D); // disable watchdog timer
 
 	battery_charger_handle = wiringPiI2CSetup(0x6a);
-	wiringPiI2CWriteReg8(battery_charger_handle, 0x04, 0x18); // set charge current
+	//wiringPiI2CWriteReg8(battery_charger_handle, 0x04, 0x18); // set charge current
 	wiringPiI2CWriteReg8(battery_charger_handle, 0x03, 0x30); // set min sys voltage
 	wiringPiI2CWriteReg8(battery_charger_handle, 0x02, 0x7D); // enable battery read
 	wiringPiI2CWriteReg8(battery_charger_handle, 0x07, 0x8D); // disable watchdog timer
@@ -260,7 +260,7 @@ void setupBatteryCharger()
 void setupAudio()
 {
 	snd_mixer_selem_id_t* sid;
-	const char* card = "sysdefault";
+	const char* card = "default";
 	const char* selem_name = "PCM";
 
 	snd_mixer_open(&handle, 0);
@@ -402,17 +402,17 @@ void displayBattery(uint32_t tick)
 
 	if (critical_shutdown == 0 && percent < pmin && status == 0)
 	{
-		addImage(&critical_battery_img,
-			 (info.width - critical_battery_img.image.width) / 2,
-			 (info.height - critical_battery_img.image.height) / 2);
-		critical_shutdown = 1;
-		critical_shutdown_tick = tick;
+		//addImage(&critical_battery_img,
+		//	 (info.width - critical_battery_img.image.width) / 2,
+		//	 (info.height - critical_battery_img.image.height) / 2);
+		//critical_shutdown = 1;
+		//critical_shutdown_tick = tick;
 	}
 
 	if (index != battery_index)
 	{
-		addImage(&battery_img[index], info.width - battery_img[index].image.width, 0);
-		removeImage(&battery_img[battery_index]);
+		//addImage(&battery_img[index], info.width - battery_img[index].image.width, 0);
+		//removeImage(&battery_img[battery_index]);
 		battery_index = index;
 	}
 }
@@ -745,10 +745,10 @@ void restart_cmd()
 void shutdown_cmd()
 {
 	//int status = i2cReadByteData(battery_charger_handle, 0x0B);
-	int status = wiringPiI2CReadReg8(battery_charger_handle, 0x0B);
-	status = status >> 5;
-	if (status == 0)
-		wiringPiI2CWriteReg8(battery_charger_handle, 0x09, 0x6c); // shut down power to system
+	//int status = wiringPiI2CReadReg8(battery_charger_handle, 0x0B);
+	//status = status >> 5;
+	//if (status == 0)
+	//	wiringPiI2CWriteReg8(battery_charger_handle, 0x09, 0x6c); // shut down power to system
 		//i2cWriteByteData(battery_charger_handle, 0x09, 0x6c); // shut down power to system
 
 	FILE *fp = popen("sudo /usr/local/bin/multi_switch.sh --es-pid", "r");
@@ -849,6 +849,8 @@ void updateGPIO()
 	int gpio8State = digitalRead(8);
 	int gpio9State = digitalRead(9);
 	int gpio10State = digitalRead(10);
+
+	//printf("%d, %d, %d, %d", gpio7State, gpio8State, gpio9State, gpio10State);
 
 	if (gpio7State == 0 && power_pressed == 0)
 	{
@@ -960,7 +962,7 @@ int main(int argc, char *argv[])
 		if (tickDiff > 1000000)
 		{
 			previousTick = tick;
-			//displayBattery(tick);
+			displayBattery(tick);
 			//displayWifi();
 			//displayEnvironment();
 
@@ -986,6 +988,7 @@ int main(int argc, char *argv[])
 		{
 			power_pressed = 0;
 			shutdown = true;
+			//printf("test");
 			break;
 		}
 
@@ -1032,15 +1035,15 @@ int main(int argc, char *argv[])
 	}
 
 
-	destroyImageLayer(&critical_battery_img);
-	for (int i = 0; i < 10; i++)
-		destroyImageLayer(&battery_img[i]);
-	destroyImageLayer(&volume_bar_img);
-	destroyImageLayer(&brightness_bar_img);
-	destroyImageLayer(&dot_img);
+	//destroyImageLayer(&critical_battery_img);
+	//for (int i = 0; i < 10; i++)
+		//destroyImageLayer(&battery_img[i]);
+	//destroyImageLayer(&volume_bar_img);
+	//destroyImageLayer(&brightness_bar_img);
+	//destroyImageLayer(&dot_img);
 
-	result = vc_dispmanx_display_close(display);
-	assert(result == 0);
+	//result = vc_dispmanx_display_close(display);
+	//assert(result == 0);
 
 
  	snd_mixer_close(handle);
@@ -1049,6 +1052,8 @@ int main(int argc, char *argv[])
 		shutdown_cmd();
 	else if (restart == true)
 		restart_cmd();
+
+	//printf("test");
 
 	//gpioTerminate();
 	return 0;

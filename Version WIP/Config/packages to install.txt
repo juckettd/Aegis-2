@@ -7,3 +7,4 @@ move dt-blob.bin to /boot/ directory
 git clone https://github.com/WiringPi/WiringPi
 ./build
 
+If using Bullseye then install the Panel Driver into the /lib/modules/[Kernel Version]/kernel/drivers/gpu/drm/panel/
