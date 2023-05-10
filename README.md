@@ -1,7 +1,7 @@
 # Aegis-2
 The Aegis 2 Handheld with a 7" screen
 
-NOTE: This is still a work in progress. The design has been finalized but I'm still working on the instructions, therefore there might be steps that are missing at this moment.
+NOTE: This is still a work in progress.
 
 ## Summary
 
@@ -50,7 +50,7 @@ The files provided here for the case. They are printed in sections so that a pri
 
 Once everything is glued together then no post processing on the outside is technically required to assemble the device. However, I chose to use filler, sand paper, and paint to get a really clean looking finish. The level of detail you desire on your handheld will be up to you based on how much effort you want to devote. Refer to youtube for how to sand and paint a 3D printed piece. However, try to keep the inside of the device as paint free as possible as the internal structure is already at the correct dimensions for the internal components.
 
-I would also sand down the holes where the buttons will be located as they will to be rough from the 3D printing process. This can cause the buttons to stick. I would also check the shoulder buttons to make sure there is not any fricten preventing them from moving properly. If there is then sound down the appropriate areas.
+I would also sand down the holes where the buttons will be located as they will to be rough from the 3D printing process. This can cause the buttons to stick. I would also check the shoulder buttons to make sure there is not any friction preventing them from moving properly. If there is then sand down the appropriate areas.
 
 ### Assembly
 
@@ -62,16 +62,13 @@ TODO: Assembly Instructions
 
 The Raspberry PI OS Buster version or Retropie both work. To get Bullseye working we need a new video driver that is not available yet. I've made a temporary one and will provide it here when I test it out.
 
-The Config files provided also do not work yet without some modifications
+The Config files provided that setup the device will install a monitor program that looks for the button presses for the power/reset/volume/misc. And like the previous handheld I built it will also eventually provide an overlay that will show battery/wifi status along with volume/brightness. However, the overlay does not work yet so that part of the code is commented out. But the monitor script does work for the buttons.
 
 ### /boot/config.txt
 
 Regardless of which CM4 you use and which method is used to load the OS, you will need to add the following lines to the /boot/config.txt file. These are also listed in the /Config/boot/config.txt file in this repository:
 
 dtoverlay=dwc2,dr_mode=host<br/>
-gpu_mem_256=128<br/>
-gpu_mem_512=256<br/>
-gpu_mem_1024=256<br/>
 h264_freq=333
 
 The lines above will optimize the graphics for Moonlight (if you choose to use it to stream PC games) and will enable USB 2.0 on the device to get the Teensy and external USB ports working.
