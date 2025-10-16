@@ -9,15 +9,15 @@ uint8_t inputButtonPins[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 17, 18
 uint8_t outputButtonCount = 2;
 uint8_t outputButtonPins[2] = {22, 23};
 
-int deadZone = 75;
+int deadZone = 125;
 int serialCount = 0;
 
 // Setup the debouncing
 
-void setup() {
-  //Serial1.setRX(25);
-  //Serial1.setTX(24);
-  //Serial1.begin(38400);
+void setup() {  
+  Serial1.setRX(25);
+  Serial1.setTX(24);
+  Serial1.begin(38400);
 
   for(int i = 0; i < inputButtonCount; i++) {
     pinMode(inputButtonPins[i], INPUT_PULLUP);
@@ -31,7 +31,7 @@ void setup() {
   XInput.begin();
 
   XInput.setTriggerRange(0, 1);
-  XInput.setJoystickRange(250, 750);
+  XInput.setJoystickRange(200, 800);
 }
 
 
@@ -58,8 +58,8 @@ void loop() {
   int leftStickX = analogRead(1);
   int leftStickY = analogRead(0);
 
-  int rightStickX = analogRead(7);
-  int rightStickY = analogRead(6);
+  int rightStickX = 1000 - analogRead(7) + 125;
+  int rightStickY = 1000 - analogRead(6);
 
   uint8_t bigRumble = XInput.getRumbleLeft();
   uint8_t smallRumble = XInput.getRumbleRight();
@@ -146,5 +146,5 @@ void loop() {
   }
   */
   
-  delay(25);
+  delay(50);
 }

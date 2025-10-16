@@ -15,3 +15,9 @@ Initial Release of the Aegis 2 WIP
 
 Updated the CAD Files to add a back with grips
 Updated the Bill of Materials
+
+### Version 0.3.0
+
+Update a Resistor value from 100 Ohm to 10K Ohm
+Update the Teensy code to account for the reversed joystick
+Added a new video driver for Raspberry pi OS 64 bit
