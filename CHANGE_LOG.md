@@ -21,3 +21,8 @@ Updated the Bill of Materials
 Update a Resistor value from 100 Ohm to 10K Ohm
 Update the Teensy code to account for the reversed joystick
 Added a new video driver for Raspberry pi OS 64 bit
+
+### Version 0.4.0
+
+Update the BOM to address some obsolete items
+Update the Teensy code to add better button debouncing and to add a calibration mode for joysticks

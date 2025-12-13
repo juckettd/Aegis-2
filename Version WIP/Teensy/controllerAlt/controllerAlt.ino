@@ -1,4 +1,5 @@
 #include <XInput.h>
+#include <Toggle.h>
 
 uint8_t smallRumbleCounter = 0;
 uint8_t bigRumbleCounter = 0;
@@ -12,48 +13,122 @@ uint8_t outputButtonPins[2] = {22, 23};
 int deadZone = 125;
 int serialCount = 0;
 
+const int Pin_DpadUp    = 5;
+const int Pin_DpadDown  = 3;
+const int Pin_DpadLeft  = 2;
+const int Pin_DpadRight = 6;
+
+const int Pin_ButtonA = 11;
+const int Pin_ButtonB = 10;
+const int Pin_ButtonX = 17;
+const int Pin_ButtonY = 16;
+
+const int Pin_ButtonLB = 8;
+const int Pin_ButtonRB = 18;
+
+const int Pin_ButtonL3 = 4;
+const int Pin_ButtonR3 = 12;
+
+const int Pin_TriggerL = 7;
+const int Pin_TriggerR = 19;
+
+const int Pin_ButtonStart = 9;
+const int Pin_ButtonSelect = 1;
+
 // Setup the debouncing
+Toggle ButtonUpPad(Pin_DpadUp);
+Toggle ButtonDownPad(Pin_DpadDown);
+Toggle ButtonLeftPad(Pin_DpadLeft);
+Toggle ButtonRightPad(Pin_DpadRight);
+
+Toggle ButtonA(Pin_ButtonA);
+Toggle ButtonB(Pin_ButtonB);
+Toggle ButtonX(Pin_ButtonX);
+Toggle ButtonY(Pin_ButtonY);
+Toggle ButtonLB(Pin_ButtonLB);
+Toggle ButtonRB(Pin_ButtonRB);
+Toggle ButtonL3(Pin_ButtonL3);
+Toggle ButtonR3(Pin_ButtonR3);
+Toggle ButtonLT(Pin_TriggerL);
+Toggle ButtonRT(Pin_TriggerR);
+Toggle ButtonStart(Pin_ButtonStart);
+Toggle ButtonSelect(Pin_ButtonSelect);
 
 void setup() {  
   Serial1.setRX(25);
   Serial1.setTX(24);
   Serial1.begin(38400);
 
+  ButtonUpPad.begin(Pin_DpadUp);
+  ButtonDownPad.begin(Pin_DpadDown);
+  ButtonLeftPad.begin(Pin_DpadLeft);
+  ButtonRightPad.begin(Pin_DpadRight);
+  ButtonA.begin(Pin_ButtonA);
+  ButtonB.begin(Pin_ButtonB);
+  ButtonX.begin(Pin_ButtonX);
+  ButtonY.begin(Pin_ButtonY);
+  ButtonLB.begin(Pin_ButtonLB);
+  ButtonRB.begin(Pin_ButtonRB);
+  ButtonL3.begin(Pin_ButtonL3);
+  ButtonR3.begin(Pin_ButtonR3);
+  ButtonLT.begin(Pin_TriggerL);
+  ButtonRT.begin(Pin_TriggerR);
+  ButtonStart.begin(Pin_ButtonStart);
+  ButtonSelect.begin(Pin_ButtonSelect);
+/*
   for(int i = 0; i < inputButtonCount; i++) {
     pinMode(inputButtonPins[i], INPUT_PULLUP);
   }
-
+*/
   for(int i = 0; i < outputButtonCount; i++) {
     pinMode(outputButtonPins[i], OUTPUT);
     analogWriteFrequency(outputButtonPins[i], 187500);
   }
 
-  XInput.begin();
-
   XInput.setTriggerRange(0, 1);
   XInput.setJoystickRange(200, 800);
+  XInput.setAutoSend(false);
+
+  XInput.begin();
 }
 
 
 void loop() {
-  boolean upPad = !digitalRead(5);
-  boolean downPad = !digitalRead(3);
-  boolean leftPad = !digitalRead(2);
-  boolean rightPad = !digitalRead(6);
+  ButtonUpPad.poll();
+  ButtonDownPad.poll();
+  ButtonLeftPad.poll();
+  ButtonRightPad.poll();
+  ButtonA.poll();
+  ButtonB.poll();
+  ButtonX.poll();
+  ButtonY.poll();
+  ButtonLB.poll();
+  ButtonRB.poll();
+  ButtonL3.poll();
+  ButtonR3.poll();
+  ButtonLT.poll();
+  ButtonRT.poll();
+  ButtonStart.poll();
+  ButtonSelect.poll();
+  
+  boolean upPad = ButtonUpPad.isPressed();
+  boolean downPad = ButtonDownPad.isPressed();
+  boolean leftPad = ButtonLeftPad.isPressed();
+  boolean rightPad = ButtonRightPad.isPressed();
 
-  boolean buttonA = !digitalRead(11);
-  boolean buttonB = !digitalRead(10);
-  boolean buttonX = !digitalRead(17);
-  boolean buttonY = !digitalRead(16);
-  boolean buttonLB = !digitalRead(8);
-  boolean buttonRB = !digitalRead(18);
-  boolean buttonL3 = !digitalRead(4);
-  boolean buttonR3 = !digitalRead(12);
-  boolean buttonStart = !digitalRead(9);
-  boolean buttonSelect = !digitalRead(1);
+  boolean buttonA = ButtonA.isPressed();
+  boolean buttonB = ButtonB.isPressed();
+  boolean buttonX = ButtonX.isPressed();
+  boolean buttonY = ButtonY.isPressed();
+  boolean buttonLB = ButtonLB.isPressed();
+  boolean buttonRB = ButtonRB.isPressed();
+  boolean buttonL3 = ButtonL3.isPressed();
+  boolean buttonR3 = ButtonR3.isPressed();
+  boolean buttonStart = ButtonStart.isPressed();
+  boolean buttonSelect = ButtonSelect.isPressed();
 
-  int buttonLT = !digitalRead(7);
-  int buttonRT = !digitalRead(19);
+  int buttonLT = ButtonLT.isPressed();
+  int buttonRT = ButtonRT.isPressed();
 
   int leftStickX = analogRead(1);
   int leftStickY = analogRead(0);
@@ -146,5 +221,6 @@ void loop() {
   }
   */
   
-  delay(50);
+  //delay(50);
+  XInput.send();
 }
